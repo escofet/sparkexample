@@ -1,0 +1,6 @@
+-Hacer dos endpoint para adicionar usuarios que tengan acceso (necesitan
+una bbdd o una estructura de datos nueva) y que obtenga la lista de usuarios.
+
+-Permitir un endpoint para adicionar nuevas monedas de cambio y su tasa correspodiente
+
+http://sparkjava.com/documentation.html
