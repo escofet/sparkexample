@@ -16,6 +16,7 @@ import static spark.Spark.*;
 public class MoneyExchange {
     @SuppressWarnings({"PublicField", "NonPublicExported"})
     public static CurrencyExchange exchange = null;
+    public static boolean authenticated = false;
     
     static {
         try {
@@ -63,6 +64,22 @@ public class MoneyExchange {
             return String.format(Locale.US,
                 "{\"%S\":%.2f}", curr, value
             );
+        });
+        
+        post("/login", (req, res) -> {
+            String user = req.queryParams("user");
+            String pass = req.queryParams("pass");
+            if(user.equalsIgnoreCase("pepe") && pass.equalsIgnoreCase("123")) {
+                System.out.println("Autenticathed!!");
+                authenticated = true;
+            }
+            return "Logged OK";
+        });
+        
+        before("/convert/*",(req, res) -> {
+            if (!authenticated) {
+                halt(401, "You cannot consult money exchanged");
+            }
         });
     }
 }
