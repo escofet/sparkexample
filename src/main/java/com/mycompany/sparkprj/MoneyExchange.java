@@ -2,6 +2,7 @@ package com.mycompany.sparkprj;
 /*
 Get current exchange from fixer.io and convert currency EUR -> USD
 Reboot service on a daily basis
+Default port 4567
 */
 import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
