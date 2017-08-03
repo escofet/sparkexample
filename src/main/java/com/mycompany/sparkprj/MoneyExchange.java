@@ -1,17 +1,23 @@
 package com.mycompany.sparkprj;
-/*
-Get current exchange from fixer.io and convert currency EUR -> USD
-Reboot service on a daily basis
-Default port 4567
-*/
-import com.google.gson.Gson;
-import com.google.gson.JsonParseException;
+import static spark.Spark.get;
+import static spark.Spark.stop;
+
 import java.io.IOException;
+import java.net.InetSocketAddress;
+import java.net.Proxy;
+import java.net.SocketAddress;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import org.jsoup.Jsoup;
-import static spark.Spark.*;
+
+/*
+Get current exchange from fixer.io and convert currency EUR -> USD
+Reboot service on a daily basis
+Default port 4567. Eg http://localhost:4567/rates
+*/
+import com.google.gson.Gson;
+import com.google.gson.JsonParseException;
 
 @SuppressWarnings("ClassWithoutLogger")
 public class MoneyExchange {
@@ -21,8 +27,11 @@ public class MoneyExchange {
     static {
         try {
             // Ger rates against EUR
+        	SocketAddress addr = new InetSocketAddress("vale.proxy.corp.sopra", 8080);
+    		Proxy proxy = new Proxy(Proxy.Type.HTTP, addr);
             String json = Jsoup.connect("http://api.fixer.io/latest?base=EUR")
                     .ignoreContentType(true)
+                    .proxy(proxy)
                     .execute()
                     .body();
             exchange = new Gson().fromJson(json, CurrencyExchange.class);
